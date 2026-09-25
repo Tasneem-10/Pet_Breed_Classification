@@ -25,25 +25,25 @@ device = torch.device(
 
 # Build model
 
-model = models.resnet50(weights=None)
+def load_model():
+    model = models.resnet50(weights=None)
 
-model.fc = nn.Linear(
-    model.fc.in_features,
-    NUM_CLASSES
-)
-
-
-# Load trained model
-
-model.load_state_dict(
-    torch.load(
-        "resnet50_pet_breed.pth",
-        map_location=device
+    model.fc = nn.Linear(
+        model.fc.in_features,
+        NUM_CLASSES
     )
-)
 
-model = model.to(device)
-model.eval()
+    model.load_state_dict(
+        torch.load(
+            "resnet50_pet_breed.pth",
+            map_location=device
+        )
+    )
+
+    model = model.to(device)
+    model.eval()
+
+    return model
 
 
 # Image preprocessing
@@ -81,6 +81,7 @@ async def predict(
     image = image.unsqueeze(0)
 
     image = image.to(device)
+    model = load_model()
 
     with torch.no_grad():
 
