@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from torchvision import models, transforms
-from torchvision.datasets import OxfordIIITPet
+from class_names import CLASS_NAMES
 from fastapi import FastAPI, File, UploadFile
 from PIL import Image
 import io
@@ -21,16 +21,6 @@ device = torch.device(
 )
 
 
-# Load class names
-
-dataset = OxfordIIITPet(
-    root="./data/raw",
-    split="trainval",
-    target_types="category",
-    download=False
-)
-
-class_names = dataset.classes
 
 
 # Build model
@@ -106,7 +96,7 @@ async def predict(
             1
         )
 
-    breed = class_names[predicted.item()]
+    breed = CLASS_NAMES[predicted.item()]
 
     return {
         "breed": breed,
