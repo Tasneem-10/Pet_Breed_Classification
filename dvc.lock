@@ -1,0 +1,40 @@
+schema: '2.0'
+stages:
+  train:
+    cmd: python train.py
+    deps:
+    - path: data/raw/oxford-iiit-pet
+      hash: md5
+      md5: fb773eb63522b0c8aa0f3e545779c7f2.dir
+      size: 1632137285
+      nfiles: 25866
+    - path: train.py
+      hash: md5
+      md5: 7103330779a2670ebcba48e9a58f5915
+      size: 2998
+    outs:
+    - path: resnet50_pet_breed.pth
+      hash: md5
+      md5: 0b0c069a6db9c473a3697bb14e997669
+      size: 94652481
+  evaluate:
+    cmd: python evaluate.py
+    deps:
+    - path: data/raw/oxford-iiit-pet
+      hash: md5
+      md5: fb773eb63522b0c8aa0f3e545779c7f2.dir
+      size: 1632137285
+      nfiles: 25866
+    - path: evaluate.py
+      hash: md5
+      md5: 965b9bb969aca133f7377cdbef876dcf
+      size: 1719
+    - path: resnet50_pet_breed.pth
+      hash: md5
+      md5: 0b0c069a6db9c473a3697bb14e997669
+      size: 94652481
+    outs:
+    - path: metrics.json
+      hash: md5
+      md5: 0f3d229760fbe614515b34c61b5b5855
+      size: 41

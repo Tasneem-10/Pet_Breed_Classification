@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+
+# MLflow
+mlflow.db
+mlruns/
+
+# DVC data
+data/raw/oxford-iiit-pet/
+
+# Model weights
+*.pth
+
+# Python / IDE
+.vscode/

@@ -1,0 +1,19 @@
+stages:
+
+  train:
+    cmd: python train.py
+    deps:
+      - train.py
+      - data/raw/oxford-iiit-pet
+    outs:
+      - resnet50_pet_breed.pth
+
+  evaluate:
+    cmd: python evaluate.py
+    deps:
+      - evaluate.py
+      - resnet50_pet_breed.pth
+      - data/raw/oxford-iiit-pet
+    metrics:
+      - metrics.json:
+          cache: false
