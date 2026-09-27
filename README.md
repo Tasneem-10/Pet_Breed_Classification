@@ -118,17 +118,13 @@ Dataset
    ↓
 Evaluate
 
-
-Pipeline files:
-
+Pipeline Files
 dvc.yaml
 dvc.lock
 train.py
 evaluate.py
 
-
-Reproduce the pipeline using:
-
+Reproduce Pipeline
 dvc repro
 
 🌐 FastAPI Serving
@@ -136,28 +132,20 @@ Endpoints
 GET /health
 POST /predict
 
-
-Example response:
-
+Example Response
 {
   "breed": "Miniature Pinscher",
   "confidence": 0.83
 }
 
 🐳 Docker
-
-Build Image:
-
+Build Image
 docker build -t pet-breed-api .
 
-
-Run Container:
-
+Run Container
 docker run -p 8001:8000 pet-breed-api
 
-
-Access API documentation:
-
+API Docs
 http://localhost:8001/docs
 
 ✅ Testing
@@ -188,24 +176,18 @@ Run Tests
 Build Docker Image
 
 
-Workflow:
+Workflow file:
 
 .github/workflows/ci.yml
 
 🚀 Production Serving with BentoML
-
-Endpoint:
-
+Endpoint
 POST /predict
 
-
-Local serving:
-
+Local Server
 http://localhost:3000
 
-
-Successfully tested with:
-
+Status
 200 OK
 
 ⚡ Performance Optimization
@@ -215,7 +197,7 @@ The original ResNet50 model was replaced with a lighter ResNet18 architecture.
 Model Comparison
 Metric	ResNet50	ResNet18Validation Accuracy	70.52%	88.86%
 Average Inference Time	170.12 ms	64.18 ms
-Improvement
+Improvements
 
 ✅ 62% Faster Inference
 
@@ -223,19 +205,19 @@ Improvement
 
 ✅ Smaller Model Size
 
-Saved model:
+Saved Model:
 
 resnet18_pet_breed_optimized.pth
 
 📈 Load Testing (Locust)
-Baseline – ResNet50
+Baseline - ResNet50
 Metric	ValueRequests	5661
 Failures	6
 Median	1900 ms
 P95	2500 ms
 P99	3000 ms
 RPS	3.7
-Optimized – ResNet18
+Optimized - ResNet18
 Metric	ValueRequests	238
 Failures	0
 Median	280 ms
@@ -247,8 +229,7 @@ RPS	5.7
 
 Data drift detection is implemented using PSI (Population Stability Index).
 
-Monitored feature:
-
+Monitored Feature
 Image Brightness
 Drift Report
 Metric	ValueReference Images	500
@@ -304,3 +285,4 @@ Performance benchmarks were conducted in separate runs.
 Tasneem Hany Mohamed
 
 MLOps Final Project
+
