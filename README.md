@@ -1,14 +1,6 @@
 # 🐶 Pet Breed Classification MLOps Pipeline
 
-https://img.shields.io/badge/Python-3.10-blue]()
-https://img.shields.io/badge/PyTorch-Deep%20Learning-red]()
-https://img.shields.io/badge/MLflow-Experiment%20Tracking-blue]()
-https://img.shields.io/badge/DVC-Data%20Versioning-green]()
-https://img.shields.io/badge/Docker-Containerized-2496ED]()
-https://img.shields.io/badge/FastAPI-Serving-009688]()
-https://img.shields.io/badge/CI-GitHub%20Actions-success]()
-
-End-to-end MLOps project for classifying pet breeds from images using transfer learning and production-grade ML tools.
+End-to-end MLOps project for classifying pet breed images using transfer learning with ResNet and production-oriented machine learning tools.
 
 ---
 
@@ -22,13 +14,15 @@ End-to-end MLOps project for classifying pet breeds from images using transfer l
 
 ✅ Dataset & Pipeline Versioning using DVC
 
-✅ CI/CD with GitHub Actions
+✅ REST API Development with FastAPI
 
-✅ Model Serving with FastAPI & BentoML
+✅ Production Serving using BentoML
 
-✅ Containerization using Docker
+✅ Docker Containerization
 
-✅ API Load Testing with Locust
+✅ Load Testing with Locust
+
+✅ CI/CD using GitHub Actions
 
 ✅ Model Optimization (ResNet50 → ResNet18)
 
@@ -38,251 +32,398 @@ End-to-end MLOps project for classifying pet breeds from images using transfer l
 
 ## 📌 Dataset
 
-**Oxford-IIIT Pet Dataset**
+This project uses the Oxford-IIIT Pet Dataset.
 
 | Metric | Value |
 |----------|----------|
 | Classes | 37 |
-| Total Images (trainval) | 3680 |
-| Training Images | 2944 |
+| Images (trainval split) | 3,680 |
+| Training Images | 2,944 |
 | Validation Images | 736 |
 | Image Size | 224 × 224 |
 
-Dataset storage and versioning are managed using **DVC**, keeping large files outside Git.
+The dataset is tracked with DVC and stored outside Git.
 
 ---
 
 ## 🏗️ Project Architecture
 
-```text
-Oxford-IIIT Pet Dataset
-          ↓
-    Data Inspection
-          ↓
-     Preprocessing
-          ↓
-    ResNet50 Baseline
-          ↓
-        MLflow
-          ↓
-         DVC
-          ↓
-   FastAPI + Docker
-          ↓
-      CI Testing
-          ↓
-       BentoML
-          ↓
-    Locust Testing
-          ↓
-  ResNet18 Optimization
-          ↓
-   Performance Benchmark
-          ↓
-    PSI Monitoring
+    Oxford-IIIT Pet Dataset
+              ↓
+        Data Inspection
+              ↓
+         Preprocessing
+              ↓
+        ResNet50 Baseline
+              ↓
+            MLflow
+              ↓
+             DVC
+              ↓
+       FastAPI + Docker
+              ↓
+          CI Testing
+              ↓
+           BentoML
+              ↓
+        Locust Testing
+              ↓
+      ResNet18 Optimization
+              ↓
+       Performance Benchmark
+              ↓
+        PSI Monitoring
 
-🧠 Model Development
-Baseline Model
-Architecture: ResNet50
-Transfer Learning
-Modified Final Layer → 37 Classes
-Baseline Performance
-Metric	ValueTraining Accuracy	87.98%
-Validation Accuracy	70.52%
-Average Inference Time	170.12 ms
-Locust P95 Latency	2500 ms
+---
 
-The large train-validation gap indicated overfitting.
+## 🧠 Model Development
 
-📊 MLflow Experiment Tracking
+### Baseline Model
 
-Five experiments were conducted using different learning rates:
+- Pretrained ResNet50
+- Transfer Learning
+- Modified Final Layer
+- 37 Output Classes
 
-0.0001
-0.0003
-0.0005
-0.001
-0.003
+### Baseline Results
 
-Best Run
-Metric	ValueLearning Rate	0.0001
-Validation Accuracy	89.81%
-Registered Model
-Model Name: PetBreedClassifier
-Version: 1
+| Metric | Value |
+|----------|----------|
+| Training Accuracy | 87.98% |
+| Validation Accuracy | 70.52% |
+| Average Inference Time | 170.12 ms |
+| Locust p95 Latency | 2500 ms |
 
-🔄 DVC Pipeline
-Dataset
-   ↓
- Train
-   ↓
-Evaluate
+The gap between training and validation accuracy indicated overfitting.
 
-Pipeline Files
-dvc.yaml
-dvc.lock
-train.py
-evaluate.py
+---
 
-Reproduce Pipeline
+## 📊 MLflow Experiment Tracking
+
+Five screening experiments were conducted using different learning rates:
+
+- 0.0001
+- 0.0003
+- 0.0005
+- 0.001
+- 0.003
+
+### Best Run
+
+| Metric | Value |
+|----------|----------|
+| Learning Rate | 0.0001 |
+| Validation Accuracy | 89.81% |
+
+### Registered Model
+
+- Model Name: PetBreedClassifier
+- Version: 1
+
+---
+
+## 🔄 DVC Pipeline
+
+Pipeline Structure:
+
+    Dataset
+       ↓
+      Train
+       ↓
+    Evaluate
+
+Pipeline Files:
+
+- train.py
+- evaluate.py
+- dvc.yaml
+- dvc.lock
+
+Reproduce pipeline:
+
+```bash
 dvc repro
 
-🌐 FastAPI Serving
-Endpoints
+## 🌐 FastAPI Service
+
+### Endpoints
+
+```http
 GET /health
 POST /predict
+```
 
-Example Response
+### Example Response
+
+```json
 {
   "breed": "Miniature Pinscher",
   "confidence": 0.83
 }
+```
 
-🐳 Docker
-Build Image
-docker build -t pet-breed-api .
+---
 
-Run Container
-docker run -p 8001:8000 pet-breed-api
+## ✅ Testing
 
-API Docs
-http://localhost:8001/docs
+Implemented using **Pytest**.
 
-✅ Testing
+### Covered Tests
 
-Tests implemented using Pytest:
+- Health Endpoint
+- Invalid Request Validation
 
-Health Endpoint
-Invalid Request Validation
+### Run Tests
+
+```bash
 pytest -v
+```
 
+### Result
 
-Result:
-
+```text
 2 passed
+```
 
-🔁 Continuous Integration
+---
 
-GitHub Actions automatically performs:
+## 🐳 Docker
 
-Checkout
-   ↓
-Setup Python
-   ↓
+### Build Image
+
+```bash
+docker build -t pet-breed-api .
+```
+
+### Run Container
+
+```bash
+docker run -p 8001:8000 pet-breed-api
+```
+
+### API Documentation
+
+```text
+http://localhost:8001/docs
+```
+
+---
+
+## 🔁 Continuous Integration
+
+GitHub Actions Workflow:
+
+```text
+Checkout Repository
+         ↓
+     Setup Python
+         ↓
 Install Dependencies
-   ↓
-Run Tests
-   ↓
-Build Docker Image
+         ↓
+      Run Tests
+         ↓
+  Build Docker Image
+```
 
+### Workflow File
 
-Workflow file:
-
+```text
 .github/workflows/ci.yml
+```
 
-🚀 Production Serving with BentoML
-Endpoint
+---
+
+## 🚀 Production Serving with BentoML
+
+### Endpoint
+
+```http
 POST /predict
+```
 
-Local Server
+### Local Server
+
+```text
 http://localhost:3000
+```
 
-Status
+### Status
+
+```text
 200 OK
+```
 
-⚡ Performance Optimization
+---
 
-The original ResNet50 model was replaced with a lighter ResNet18 architecture.
+## ⚡ Model Optimization
 
-Model Comparison
-Metric	ResNet50	ResNet18Validation Accuracy	70.52%	88.86%
-Average Inference Time	170.12 ms	64.18 ms
-Improvements
+The baseline **ResNet50** model was replaced with a lighter **ResNet18** architecture.
 
-✅ 62% Faster Inference
+### Model Comparison
+
+| Metric | ResNet50 | ResNet18 |
+|----------|----------|----------|
+| Validation Accuracy | 70.52% | 88.86% |
+| Average Inference Time | 170.12 ms | 64.18 ms |
+
+### Improvements
 
 ✅ Higher Validation Accuracy
 
-✅ Smaller Model Size
+✅ Faster Inference
 
-Saved Model:
+✅ Lower Latency
 
+✅ Better Deployment Performance
+
+### Optimized Model
+
+```text
 resnet18_pet_breed_optimized.pth
+```
 
-📈 Load Testing (Locust)
-Baseline - ResNet50
-Metric	ValueRequests	5661
-Failures	6
-Median	1900 ms
-P95	2500 ms
-P99	3000 ms
-RPS	3.7
-Optimized - ResNet18
-Metric	ValueRequests	238
-Failures	0
-Median	280 ms
-P95	780 ms
-P99	2400 ms
-Average	384.08 ms
-RPS	5.7
-📉 Monitoring
+---
 
-Data drift detection is implemented using PSI (Population Stability Index).
+## 📈 Load Testing (Locust)
 
-Monitored Feature
-Image Brightness
-Drift Report
-Metric	ValueReference Images	500
-Current Images	500
-PSI	0.1029
-Threshold	0.25
-Status	✅ No Significant Drift
+### Baseline - ResNet50
 
-Artifacts:
+| Metric | Value |
+|----------|----------|
+| Requests | 5661 |
+| Failures | 6 |
+| Median Latency | 1900 ms |
+| p95 | 2500 ms |
+| p99 | 3000 ms |
+| RPS | 3.7 |
 
+### Optimized - ResNet18
+
+| Metric | Value |
+|----------|----------|
+| Requests | 238 |
+| Failures | 0 |
+| Median Latency | 280 ms |
+| p95 | 780 ms |
+| p99 | 2400 ms |
+| Average | 384.08 ms |
+| RPS | 5.7 |
+
+---
+
+## 📉 Monitoring
+
+Data Drift Detection is implemented using **Population Stability Index (PSI)**.
+
+### Monitored Feature
+
+- Image Brightness
+
+### Drift Report
+
+| Metric | Value |
+|----------|----------|
+| Reference Images | 500 |
+| Current Images | 500 |
+| PSI | 0.1029 |
+| Threshold | 0.25 |
+| Status | ✅ No Significant Drift |
+
+### Artifacts
+
+```text
 monitoring_metrics.json
 monitoring_dashboard.json
+```
 
-📂 Project Structure
+---
+
+## 📂 Project Structure
+
+```text
 Pet_Breed_Classification/
 │
 ├── data/
 ├── service/
 ├── tests/
-├── .github/workflows/
+├── .github/
+│   └── workflows/
 │
+├── app.py
 ├── train.py
 ├── evaluate.py
+├── predict.py
 ├── mlflow_train.py
-├── app.py
+├── register_model.py
+├── optimize_model.py
+├── benchmark.py
 ├── monitoring.py
 ├── locustfile.py
 ├── dvc.yaml
+├── dvc.lock
 ├── Dockerfile
+├── requirements.txt
 └── README.md
+```
 
-🛠️ Tech Stack
-Python
-PyTorch
-Torchvision
-FastAPI
-BentoML
-MLflow
-DVC
-Docker
-GitHub Actions
-Locust
-Pytest
-NumPy
-Pillow
-⚠️ Limitations
-Experiments were performed on CPU.
-Results may vary across hardware configurations.
-Monitoring is implemented as a local PSI demonstration.
-Performance benchmarks were conducted in separate runs.
-👩‍💻 Author
+---
 
-Tasneem Hany Mohamed
+## 🛠️ Technology Stack
 
-MLOps Final Project
+- Python
+- PyTorch
+- Torchvision
+- FastAPI
+- BentoML
+- MLflow
+- DVC
+- Docker
+- GitHub Actions
+- Pytest
+- Locust
+- NumPy
+- Pillow
 
+---
+
+## 🔬 Reproducibility
+
+The project uses:
+
+- Fixed random seed
+- DVC pipeline tracking
+- DVC dataset versioning
+- MLflow experiment tracking
+- GitHub Actions CI workflow
+
+---
+
+## 📋 Results Summary
+
+### Final Optimized Model
+
+| Metric | Result |
+|----------|----------|
+| Validation Accuracy | 88.86% |
+| Average Inference Time | 64.18 ms |
+| p95 Latency | 780 ms |
+| Failures | 0 |
+| PSI Score | 0.1029 |
+
+---
+
+## ⚠️ Limitations
+
+- Experiments were performed on CPU.
+- Results may vary depending on hardware.
+- Monitoring is a local PSI-based demonstration.
+- Benchmark runs were executed separately.
+- Latency values are local measurements.
+
+---
+
+## 👩‍💻 Author
+
+**Tasneem Hany Mohamed**
+
+*MLOps Final Project*
