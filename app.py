@@ -1,29 +1,27 @@
+import io
+
 import torch
-from torch import nn
-from torchvision import models, transforms
-from class_names import CLASS_NAMES
 from fastapi import FastAPI, File, UploadFile
 from PIL import Image
-import io
+from torch import nn
+from torchvision import models, transforms
+
+from class_names import CLASS_NAMES
 
 
 NUM_CLASSES = 37
 
-app = FastAPI(
-    title="Pet Breed Classification API"
-)
-
-
-# Device
+app = FastAPI(title="Pet Breed Classification API")
 
 device = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
 )
 
+transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+])
 
-
-
-# Build model
 
 def load_model():
     model = models.resnet50(weights=None)
@@ -46,29 +44,14 @@ def load_model():
     return model
 
 
-# Image preprocessing
-
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-])
-
-
-# Health endpoint
-
 @app.get("/health")
 def health():
-    return {
-        "status": "healthy"
-    }
+    return {"status": "healthy"}
 
-
-# Prediction endpoint
 
 @app.post("/predict")
-async def predict(
-    file: UploadFile = File(...)
-):
+async def predict(file: UploadFile = File(...)):
+    model = load_model()
 
     image_bytes = await file.read()
 
@@ -77,14 +60,9 @@ async def predict(
     ).convert("RGB")
 
     image = transform(image)
-
-    image = image.unsqueeze(0)
-
-    image = image.to(device)
-    model = load_model()
+    image = image.unsqueeze(0).to(device)
 
     with torch.no_grad():
-
         outputs = model(image)
 
         probabilities = torch.softmax(
