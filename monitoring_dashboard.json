@@ -1,0 +1,25 @@
+{
+  "dashboard": {
+    "title": "Pet Breed Model Monitoring",
+    "panels": [
+      {
+        "title": "Image Brightness PSI",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "0.1029"
+          }
+        ]
+      },
+      {
+        "title": "Drift Threshold",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "0.25"
+          }
+        ]
+      }
+    ]
+  }
+}
