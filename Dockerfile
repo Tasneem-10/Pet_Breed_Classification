@@ -8,6 +8,7 @@ RUN pip install --no-cache-dir --default-timeout=300 -r requirements.txt
 
 COPY app.py .
 COPY class_names.py .
+COPY resnet18_pet_breed_optimized.pth .
 
 EXPOSE 8000
 

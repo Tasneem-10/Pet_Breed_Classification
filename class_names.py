@@ -32,6 +32,7 @@ CLASS_NAMES = [
     "Scottish Terrier",
     "Shiba Inu",
     "Siamese",
+    "Sphynx",
     "Staffordshire Bull Terrier",
     "Wheaten Terrier",
     "Yorkshire Terrier",
