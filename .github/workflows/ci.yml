@@ -26,5 +26,12 @@ jobs:
       - name: Run tests
         run: pytest -v
 
+      - name: Download model checkpoint
+        run: |
+          curl -fL --retry 3 \
+            "https://github.com/Tasneem-10/Pet_Breed_Classification/releases/download/v1.0.1/resnet18_pet_breed_optimized.pth" \
+            -o resnet18_pet_breed_optimized.pth
+          test -s resnet18_pet_breed_optimized.pth
+
       - name: Build Docker image
         run: docker build -t pet-breed-api:ci .
