@@ -96,11 +96,13 @@ The trained `.pth` files are not included in Git. The optimized API model is exp
 resnet18_pet_breed_optimized.pth
 ```
 
-Place the model file in the repository root before starting the API. Obtain it from the project's model artifacts or train/export a compatible checkpoint using the project scripts.
+Download the trained model checkpoint from the project's GitHub Release:
 
-The model must be a compatible ResNet18 state dictionary with a 37-class output layer.
+[Download resnet18_pet_breed_optimized.pth (v1.0.1)](https://github.com/Tasneem-10/Pet_Breed_Classification/releases/download/v1.0.1/resnet18_pet_breed_optimized.pth)
 
-> **Important:** A fresh clone cannot make predictions until a compatible model checkpoint is available. The repository currently does not document a configured model-artifact download URL.
+Place the downloaded file in the repository root, alongside `app.py`, before starting the API or building the Docker image.
+
+The model is a ResNet18 checkpoint configured for 37 pet-breed classes.
 
 ### 4. Download data if needed
 
@@ -275,23 +277,14 @@ The model checkpoint must be present at the path configured in `app.py`.
 
 ## BentoML Service
 
-The BentoML service is defined in `service/service.py` and uses the optimized ResNet18 checkpoint.
+The BentoML service is defined in `service/service.py` and uses the optimized ResNet18 checkpoint. Place `resnet18_pet_breed_optimized.pth` in the repository root.
 
-The service currently expects the model file:
-
-```text
-resnet18_pet_breed_optimized.pth
-```
-
-The checkpoint must be accessible at the path used by `service/service.py`. The service also requires BentoML, PyTorch, Torchvision, Pillow, and the shared class-name module.
-
-Because BentoML CLI options can vary by version, first install the dependencies and check the installed CLI:
+Install the base and optional dependencies:
 
 ```bash
-bentoml --help
+python -m pip install -r requirements.txt
+python -m pip install -r requirements-mlops.txt
 ```
-
-Then use the serving command supported by the installed BentoML version and the service definition. Verify the exact command against the project's installed BentoML version before relying on it in a fresh environment.
 
 ## Testing
 
@@ -358,30 +351,30 @@ A production implementation would require a real metrics source, a clearly defin
 
 ```text
 Pet_Breed_Classification/
-├── .github/workflows/
-├── data/
-├── service/
-│   └── service.py
-├── tests/
-├── app.py
-├── benchmark.py
-├── class_names.py
-├── download_data.py
-├── dvc.yaml
-├── dvc.lock
-├── evaluate.py
-├── locustfile.py
-├── mlflow_experiments.py
-├── mlflow_train.py
-├── model.py
-├── monitoring.py
-├── optimize_model.py
-├── predict.py
-├── prepare_data.py
-├── register_model.py
-├── requirements.txt
-├── train.py
-└── README.md
+ظ¤£ظ¤ظ¤ .github/workflows/
+ظ¤£ظ¤ظ¤ data/
+ظ¤£ظ¤ظ¤ service/
+ظ¤é   ظ¤¤ظ¤ظ¤ service.py
+ظ¤£ظ¤ظ¤ tests/
+ظ¤£ظ¤ظ¤ app.py
+ظ¤£ظ¤ظ¤ benchmark.py
+ظ¤£ظ¤ظ¤ class_names.py
+ظ¤£ظ¤ظ¤ download_data.py
+ظ¤£ظ¤ظ¤ dvc.yaml
+ظ¤£ظ¤ظ¤ dvc.lock
+ظ¤£ظ¤ظ¤ evaluate.py
+ظ¤£ظ¤ظ¤ locustfile.py
+ظ¤£ظ¤ظ¤ mlflow_experiments.py
+ظ¤£ظ¤ظ¤ mlflow_train.py
+ظ¤£ظ¤ظ¤ model.py
+ظ¤£ظ¤ظ¤ monitoring.py
+ظ¤£ظ¤ظ¤ optimize_model.py
+ظ¤£ظ¤ظ¤ predict.py
+ظ¤£ظ¤ظ¤ prepare_data.py
+ظ¤£ظ¤ظ¤ register_model.py
+ظ¤£ظ¤ظ¤ requirements.txt
+ظ¤£ظ¤ظ¤ train.py
+ظ¤¤ظ¤ظ¤ README.md
 ```
 
 ## Technology Stack
@@ -402,7 +395,7 @@ Pet_Breed_Classification/
 ## Limitations
 
 * Experiments were run on CPU, so performance may vary on other hardware.
-* The model checkpoint files are not currently distributed through a documented artifact URL.
+* The optimized ResNet18 checkpoint is distributed through GitHub Release v1.0.1; download it separately before running the API or building the Docker image.
 * The DVC remote is not configured in the repository, preventing remote artifact retrieval from a fresh clone.
 * Reported ResNet50 and ResNet18 results were obtained using different training configurations and have not been verified as a controlled architecture comparison.
 * The reported metrics should be reconciled with the committed `metrics.json` and the actual evaluation split before being presented as final results.

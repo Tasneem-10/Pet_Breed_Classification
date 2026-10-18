@@ -1,0 +1,10 @@
+﻿# Optional MLOps, experiment tracking, testing, and visualization tools
+mlflow
+dvc
+bentoml
+locust
+requests
+numpy
+matplotlib
+pytest
+httpx
